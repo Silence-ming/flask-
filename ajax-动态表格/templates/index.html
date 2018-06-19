@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/static/js/jQuery.js"></script>
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+</body>
+<table>
+    <tr>
+        <th>id</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>删除</th>
+    </tr>
+</table>
+<div class="add">+</div>
+<div class="bt"></div>
+<div class="jz">编辑完成</div>
+<script>
+ $.ajax({
+    url:'/select',
+    type:"get",
+    dataType:"json",
+    success:function(a){
+        for(var i=0;i<a.length;i++){
+            $(`<tr><td class='id'>${a[i][0]}</td><td class='name'>${a[i][1]}</td><td class='age'>${a[i][2]}</td><td class='sex'>${a[i][3]}</td><td class='del'>删除</td ></tr>`).appendTo("table")
+        }
+        $(".bt").hide()
+    }
+})
+$(".add").click(function(){
+    $.ajax({
+        url:'/add',
+        type:'post',
+        success:function(e){
+            $(`<tr><td class='id'>${e}</td><td class='name'></td><td class='age'></td><td class='sex'></td><td class='del'>删除</td ></tr>`).appendTo("table")
+        }
+    })
+})
+
+    $("table").on("click",".del",function(){
+        var that=this
+        var id=$(this).siblings(".id").text()
+        console.log(id)
+        $.ajax({
+            url:'/del',
+            type:'post',
+            data:{id:id},
+            success:function(a){
+                if(a=="ok"){
+                    $(that).parent().remove()
+                }
+            }
+        })
+    })
+
+    $("table").on("dblclick","td:not(.del,.id)",function(){
+        var that=this
+        var values=$(this).text()
+        $(this).attr("contenteditable","true").focus()
+        $(this).blur(function(){
+            var className=$(that).attr("class")
+            var id=$(that).siblings(".id").text()
+            var value=$(that).text()
+            if(value!=values){
+                console.log(value)
+                $.ajax({
+                url:'/edit',
+                type:'post',
+                data:{className:className,id:id,value:value},
+                success:function(a){
+                     if(a=="ok"){
+                         $(".jz").css({opacity:1})
+                         t=setTimeout(function(){
+                             clearTimeout(t)
+                              $(".jz").css({opacity:0})
+                         },1000)
+                          $(that).removeAttr("contenteditable")
+                     }
+                }
+            })
+            }
+        })
+    })
+</script>
+</html>

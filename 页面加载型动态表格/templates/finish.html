@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    .box{
+        width:500px;
+        height:300px;
+        border:1px solid #000;
+        position:fixed;
+        top:0;left:0;right:0;bottom:0;margin:auto;
+    }
+    .title{
+        width:100%;height:100px;text-align: center;
+        line-height:100px;
+    }
+    .con{
+        width:100%;height:200px;text-align: center;
+        line-height:00px;
+    }
+    span{
+        color:red;
+    }
+</style>
+<body>
+    <div class="box">
+        <div class="title">{{arr[0]}}</div>
+        <div class="con"><span>3</span>s后跳转</div>
+        <input type="hidden" value="{{arr[1]}}">
+    </div>
+    <script>
+        var url=document.querySelector("input").value
+        var num=3;
+        var span=document.querySelector("span")
+        var t=setInterval(function(){
+            num--;
+            span.innerText=num;
+            if(num==0){
+                clearInterval(t)
+                location.assign(url)
+            }
+        },1000)
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/static/js/jQuery.js"></script>
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+</body>
+<table>
+    <tr>
+        <th>id</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>修改</th>
+    </tr>
+     {% for data in results %}
+      <tr>
+          <td class="id">{{data[0]}}</td>
+          <td class="con">{{data[1]}}</td>
+          <td class="con">{{data[2]}}</td>
+          <td class="con">{{data[3]}}</td>
+          <td>
+              <a href="/edit?id={{data[0]}}&name={{data[1]}}&age={{data[2]}}&sex={{data[3]}}" class="editor">编辑</a>
+              <a href="/dels?id={{data[0]}}" class="del">删除</a>
+          </td>
+      </tr>
+     {% endfor %}
+</table>
+<a href="/add" class="add">+</a>
+<script>
+// $(".del").click(function(){
+//     $(this).parent().parent().remove()
+//     //var index=$(".del").index($(this))
+//     var index=$(this).parent().siblings(".id").text()
+//     $.ajax({
+//         url:"/del",
+//         type:"post",
+//         data:{index:index},
+//         success:function(b){
+//             if(b=="ok"){
+//                $(this).parent().parent().remove()
+//             }
+//         }
+//     })
+// })
+// $(".editor").click(function(){
+//     //$(this).parent().siblings(".con").text("")
+//     var sibling=$(this).parent().siblings(".con")
+//     var text1=sibling.eq(0).text()
+//     sibling.eq(0).text("")
+//     $("<input type='text'>").val(text1).appendTo(sibling.eq(0)).focus()
+//
+//     var text1=sibling.eq(1).text()
+//     sibling.eq(1).text("")
+//     $("<input type='text'>").val(text1).appendTo(sibling.eq(1))
+//
+//     var text1=sibling.eq(2).text()
+//     sibling.eq(2).text("")
+//     $("<input type='text'>").val(text1).appendTo(sibling.eq(2))
+// })
+    // $("document").keydown(function(event){
+    //     if(event.keyCode==13){
+    //         $("input").
+    //     }
+    // })
+</script>
+</html>

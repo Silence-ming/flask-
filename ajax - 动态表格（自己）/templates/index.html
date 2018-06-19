@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/static/js/jQuery.js"></script>
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+</body>
+<table>
+    <tr>
+        <th>id</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>删除</th>
+    </tr>
+     {% for data in results %}
+      <tr>
+          <td class="id" >{{data[0]}}</td>
+          <td class="name">{{data[1]}}</td>
+          <td class="age">{{data[2]}}</td>
+          <td class="sex">{{data[3]}}</td>
+          <td class="del">删除</td>
+      </tr>
+     {% endfor %}
+</table>
+<div class="add">+</div>
+<script>
+$(".add").click(function(){
+    $.ajax({
+        url:'/add',
+        type:'get',
+        success:function(a){
+            if(a=="ok"){
+                location.assign('/')
+            }
+        }
+    })
+})
+$(".del").click(function(){
+    var id=$(this).siblings(".id").text()
+    $(this).parent().remove()
+    $.ajax({
+        url:'dels',
+        type:'get',
+        data:{id:id}
+    })
+})
+
+$("td").dblclick(function(){
+    var that=this;
+    var attr=$(this).attr("class")  //获取类名
+    if(attr=='name'||attr=='age'||attr=='sex'){
+        var values=$(this).html();
+        $(this).html("");
+        $("<input type='text' class='edit'>").val(values).appendTo($(this)).focus()
+        var id=$(this).siblings(".id").text()  //获取id
+        //离开焦点
+        $(".edit").blur(function(){
+             var val=$(".edit").val();  //获取内容
+            $(that).text(val).remove(".edit")
+            $.ajax({
+                url:'edit',
+                type:'post',
+                data:{val:val,id:id,attr:attr}
+            })
+        })
+        //回车
+        $(this).keydown(function(event){
+            if(event.keyCode==13 && $(".edit").val()){
+                var val=$(".edit").val();
+                $(this).text(val).remove(".edit")
+                $.ajax({
+                    url:'edit',
+                    type:'post',
+                    data:{val:val,id:id,attr:attr}
+                })
+            }
+        })
+    }
+})
+</script>
+</html>
